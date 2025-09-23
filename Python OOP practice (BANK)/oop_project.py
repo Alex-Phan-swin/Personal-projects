@@ -3,12 +3,17 @@ from bank_accounts import *
 Dave = BankAccount(1000, "Dave")
 Sara = BankAccount(2000, "Sara")
 
-Dave.getBalance()
-Sara.getBalance()
+# Dave.getBalance()
+# Sara.getBalance()
 
-Sara.deposit(500)
+# Sara.deposit(500)
 
-Dave.withdraw(10)
+# Dave.withdraw(10)
 
-Dave.transfer(10000, Sara)
-Dave.transfer(100, Sara)
+# Dave.transfer(10000, Sara)
+# Dave.transfer(100, Sara)
+
+Jim = InterestRewardsAcct(1000, "Jim")
+Jim.getBalance()
+Jim.deposit(100)
+Jim.transfer(100, Dave)
