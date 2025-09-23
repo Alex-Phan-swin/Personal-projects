@@ -34,9 +34,16 @@ class BankAccount:
     def transfer(self, amount, account):
         try:
             print(f"\n**********\n\nBeginning Transfer.. ")
-            self.viableTransaction
+            self.viableTransaction(amount)
             self.withdraw(amount)
             account.deposit(amount)
             print("\n Transfer complete!\n\n**********")
         except BalanceException as error:
             print(f"\n Transfer interrupted: {error}")
+
+class InterestRewardsAcct(BankAccount):
+    def deposit(self, amount):
+        self.balance = self.balance + amount + (amount * 1.05)
+        print("Deposit accepted with interest rewards!")
+        self.getBalance()
+        
