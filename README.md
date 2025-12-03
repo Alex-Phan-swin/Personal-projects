@@ -1,22 +1,25 @@
-# First Project - Quant Trading
+# Personal Projects – AI & Data Science
 
-## Overview
+This repository showcases a collection of personal projects created by a student studying **Artificial Intelligence**, **Data Science**, and **Algorithmic Thinking**.  
+It serves as a personal space to explore ideas, practise coding, build foundational knowledge, and develop hands-on experience across multiple areas of AI and analytics.
 
-This repository contains my first project on **quantitative trading**.  
-It implements key financial indicators such as RSI, Bollinger Bands, ATR, MACD, and volatility estimators using Python and pandas.
+The projects inside reflect ongoing learning, including working with data, building small algorithms, exploring automation, experimenting with early machine-learning concepts, and strengthening core Python skills.  
+Each project is written to be readable, modular, and growth-oriented.
 
 ---
 
 ## Features
 
-- Manual implementations of popular trading indicators without relying on external TA libraries  
-- Group-wise computation for multiple tickers or assets in a single DataFrame  
-- Clean, reusable Python functions for calculating:  
-  - Relative Strength Index (RSI)  
-  - Bollinger Bands  
-  - Average True Range (ATR)  
-  - Moving Average Convergence Divergence (MACD)  
-  - Garman-Klass volatility estimator
+- A variety of AI, data science, and algorithmic exploration projects  
+- Clean and structured Python scripts designed for learning and experimentation  
+- Manual implementations of foundational concepts to build understanding, including:
+  - Data preprocessing and transformations  
+  - Statistical and mathematical computations  
+  - Early machine learning logic  
+  - Automation and algorithm design  
+  - Quantitative and analytical modelling  
+- Projects intentionally created without over-relying on high-level libraries, encouraging deeper conceptual understanding  
+- Support for multiple datasets, reusable functions, and scalable project layouts as skills grow  
 
 ---
 
@@ -24,11 +27,16 @@ It implements key financial indicators such as RSI, Bollinger Bands, ATR, MACD, 
 
 ### Prerequisites
 
-- Python 3.7+  
-- pandas  
-- numpy  
+To run the projects in this repository, you should have:
 
-You can install required packages using:
+- **Python 3.7+**
+- **pandas**
+- **numpy**
+- *(Optional)* `matplotlib` or `scikit-learn` for visualisation and ML-focused projects
+
+### Installation
+
+You can install the required base packages using:
 
 ```bash
 pip install pandas numpy
