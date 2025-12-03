@@ -14,7 +14,7 @@ class Random(Player):
     
 class Random_efficient(Player):
     def get_move(self, game):
-        available_moves = [i for i, spot in enumerate(game.cells) if cells not in ['X', 'O']]
+        available_moves = [i for i, cell in enumerate(game.cells) if cell not in ['X', 'O']]
         return random.choice(available_moves)
     
 class MinimaxPlayer(Player):
@@ -104,6 +104,7 @@ if __name__ == "__main__":
     game = TicTacToe()
     player1 = MinimaxPlayer('X')
     player2 = Random_efficient('O')
+    #player2 = Random('X')
 
     current_player = player1
 
