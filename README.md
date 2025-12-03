@@ -1,34 +1,45 @@
-# First Project - Quant Trading
+Personal Projects – AI & Data Science
 
-## Overview
+This repository showcases a collection of personal projects created by a student studying Artificial Intelligence, Data Science, and Algorithmic Thinking.
+It serves as a personal space to explore ideas, practice coding, build foundational knowledge, and develop hands-on experience across multiple areas of AI and analytics.
 
-This repository contains my first project on **quantitative trading**.  
-It implements key financial indicators such as RSI, Bollinger Bands, ATR, MACD, and volatility estimators using Python and pandas.
+The projects inside reflect ongoing learning, including working with data, building small algorithms, exploring automation, experimenting with early machine-learning concepts, and strengthening core Python skills. Each project is written to be readable, modular, and growth-oriented.
 
----
+Features
 
-## Features
+A variety of AI, data science, and algorithmic exploration projects
 
-- Manual implementations of popular trading indicators without relying on external TA libraries  
-- Group-wise computation for multiple tickers or assets in a single DataFrame  
-- Clean, reusable Python functions for calculating:  
-  - Relative Strength Index (RSI)  
-  - Bollinger Bands  
-  - Average True Range (ATR)  
-  - Moving Average Convergence Divergence (MACD)  
-  - Garman-Klass volatility estimator
+Clean and structured Python scripts designed for learning and experimentation
 
----
+Manual implementations of foundational concepts to build understanding, including:
 
-## Getting Started
+Data preprocessing and transformations
 
-### Prerequisites
+Statistical and mathematical computations
 
-- Python 3.7+  
-- pandas  
-- numpy  
+Early machine learning logic
 
-You can install required packages using:
+Automation and algorithm design
 
-```bash
+Quantitative and analytical modelling
+
+Projects intentionally created without over-relying on high-level libraries, encouraging deeper conceptual understanding
+
+Support for multiple datasets, reusable functions, and scalable project layouts as skills grow
+
+Getting Started
+Prerequisites
+
+To run the projects in this repository, you should have:
+
+Python 3.7+
+
+pandas
+
+numpy
+
+(Optional) matplotlib or scikit-learn for visualisation and ML-focused projects
+
+You can install the required base packages using:
+
 pip install pandas numpy
