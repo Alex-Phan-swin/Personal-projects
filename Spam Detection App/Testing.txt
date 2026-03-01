@@ -1,0 +1,25 @@
+# from project root
+
+python -m uvicorn backend.main:app --reload --port 8000
+Sometimes port 8001,2,3 ect. is used when python fails and a terminal needs to be terminated without closing it's connection.
+To avoid problems like that, consider not using --reload
+
+Use --port 8000 to match API_BASE and the default FastApi port in index.html.
+Verify it’s running
+Open docs: http://127.0.0.1:8001/docs
+Or test from PowerShell:
+
+
+test
+
+Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8001/api/simple' -ContentType 'application/json' -Body '{"email":"a@b.com","subject":"s","body":"b"}'
+
+Serve the frontend (so browser origin is valid for COR
+
+cd "c:\Users\minhp\Music\year 2\COS30049\Original test\cos30049-app\templates"
+python -m http.server 5500
+# open http://127.0.0.1:5500
+
+# Serve frontend
+cd frontend/cos300049-frontend
+npm run dev

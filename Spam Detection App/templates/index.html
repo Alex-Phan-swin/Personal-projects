@@ -1,0 +1,180 @@
+<!-- #python -m http.server 5500
+# then open http://127.0.0.1:5500 -->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Spam Classifier — Test UI</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">ML</div>
+      <div>
+        <h1>Spam Classifier — Test UI</h1>
+        <p class="lead">Send an example email to your FastAPI `/api/simple` endpoint and view the results.</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- form -->
+      <div class="card">
+        <div class="meta">Paste a test email here. Fields map to the FastAPI SimpleRequest model.</div>
+
+        <form id="test-form">
+          <label for="email">From (email)</label>
+          <input id="email" name="email" type="text" placeholder="alice@example.com" required>
+
+          <label for="subject" style="margin-top:12px">Subject</label>
+          <input id="subject" name="subject" type="text" placeholder="Special offer inside..." required>
+
+          <label for="body" style="margin-top:12px">Body</label>
+          <textarea id="body" name="body" type="text" placeholder="Write or paste the email body here..." required></textarea>
+
+          <div class="row actions">
+            <button id="send-btn" type="submit">Classify</button>
+            <button id="clear-btn" type="button" class="secondary">Clear</button>
+          </div>
+        </form>
+
+        <div class="note">Make sure your FastAPI server is running and accessible at <code>/api/simple</code>.</div>
+      </div>
+
+      <!-- results -->
+      <aside class="card">
+        <div class="meta">Result</div>
+
+        <div id="status" class="hint small">No request yet</div>
+
+        <div style="margin-top:12px">
+          <div class="small">Predicted label</div>
+          <div id="label" class="result-big">—</div>
+
+          <div class="small" style="margin-top:6px">Spam probability</div>
+          <div class="prob-bar">
+            <div id="prob-fill" class="prob-fill"></div>
+          </div>
+          <div id="prob-text" class="small" style="margin-top:8px">—</div>
+
+          <div id="raw" style="margin-top:12px; font-size:13px; color:var(--muted); word-break:break-word;"></div>
+        </div>
+
+        <div style="margin-top:12px" class="small">
+          <strong>Notes:</strong>
+          <ul style="margin:8px 0 0 18px; padding:0; color:var(--muted)">
+            <li>API expects JSON with keys: <code>email</code>, <code>subject</code>, <code>body</code>.</li>
+            <li>If you get CORS errors, enable CORS in FastAPI (snippet below).</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <div class="small">Local dev tip: run FastAPI with <code>uvicorn main:app --reload</code> and serve this file from a static route, or open directly if running on the same origin.</div>
+    </footer>
+  </div>
+
+  <script>
+    const form = document.getElementById('test-form');
+    const sendBtn = document.getElementById('send-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const statusEl = document.getElementById('status');
+    const labelEl = document.getElementById('label');
+    const probFill = document.getElementById('prob-fill');
+    const probText = document.getElementById('prob-text');
+    const rawEl = document.getElementById('raw');
+
+    // Always use local backend during development:
+    const API_BASE = 'http://127.0.0.1:8001'; // backend origin only
+
+    function setLoading(loading){
+      if(loading){
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = '<span class="spinner"></span> Classifying...';
+        statusEl.textContent = 'Waiting for API...';
+      } else {
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = 'Classify';
+      }
+    }
+
+    clearBtn.addEventListener('click', () => {
+      form.email.value = '';
+      form.subject.value = '';
+      form.body.value = '';
+      labelEl.textContent = '—';
+      probFill.style.width = '0%';
+      probText.textContent = '—';
+      rawEl.textContent = '';
+      statusEl.textContent = 'Cleared';
+
+      
+      
+    });
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const email = form.email.value.trim();
+      const body = form.body.value.trim();
+      const subject = form.subject.value.trim();
+    
+
+      // if(!email || !subject || !body){
+      //   statusEl.textContent = 'Please fill all fields';
+      //   return;
+      // }
+
+      setLoading(true);
+      rawEl.textContent = '';
+      labelEl.textContent = '—';
+      probFill.style.width = '0%';
+      probText.textContent = '—';
+
+      try {
+        // Adjust path if serving under a path (e.g. "/api/simple")
+        const res = await fetch(API_BASE + '/api/simple', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ email, body, subject })
+        });
+
+        if(!res.ok){
+          const text = await res.text();
+          statusEl.textContent = `Error: ${res.status} ${res.statusText}`;
+          rawEl.textContent = text;
+          setLoading(false);
+          return;
+        }
+
+        const json = await res.json();
+        statusEl.textContent = 'Success';
+        labelEl.textContent = json.label ?? '—';
+
+        // spamChance might be a number or array — try to coerce:
+        let prob = json.spamChance;
+        if(Array.isArray(prob)) prob = prob[0];
+        if(typeof prob === 'string') prob = parseFloat(prob);
+        if(typeof prob !== 'number' || Number.isNaN(prob)) prob = 0;
+
+        // Expect probability between 0 and 1 or 0..100 — normalize
+        if(prob > 1.01) prob = Math.min(100, prob) / 100;
+        prob = Math.max(0, Math.min(1, prob));
+
+        const percent = Math.round(prob * 100);
+        probFill.style.width = percent + '%';
+        probText.textContent = percent + '% chance of spam';
+        rawEl.textContent = 'Raw response: ' + JSON.stringify(json, null, 2);
+      } catch (err){
+        statusEl.textContent = 'Request failed';
+        rawEl.textContent = String(err);
+      } finally {
+        setLoading(false);
+      }
+    });
+  </script>
+</body>
+</html>
